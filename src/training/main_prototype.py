@@ -7,8 +7,13 @@ https://github.com/facebookresearch/faiss/wiki/FAQ#questions-about-training
 
 from __future__ import print_function
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import argparse
 import torch
+import pandas as pd
 from torch.utils.data import DataLoader
 from wsi_datasets import WSIProtoDataset
 from utils.utils import seed_torch, read_splits
@@ -41,6 +46,14 @@ def main(args):
     csv_splits = read_splits(args)
     print('\nsuccessfully read splits for: ', list(csv_splits.keys()))
 
+    # qwe = pd.read_csv('/data/ffa6d9/shared/ms.lee/ws/PANTHER/src/etc/all_feat.csv')
+    # qwe = pd.read_csv('/data/12ff78/shared/ms.lee/ws/PANTHER/src/etc/all_feat.csv')
+    qwe = pd.read_csv('/data/890836/shared/ms.lee/ws/PANTHER/src/etc/all_feat.csv')
+
+
+    # qwe = qwe.sample(n=2000)
+
+    csv_splits = {'train': qwe}
     dataset_splits = build_datasets(csv_splits,
                                     batch_size=1,
                                     num_workers=args.num_workers,
@@ -60,7 +73,7 @@ def main(args):
                             n_proto_patches=args.n_proto_patches,
                             use_cuda=True if torch.cuda.is_available() else False)
     
-
+    import pdb; pdb.set_trace()
     save_fpath = j_(args.split_dir,
                     'prototypes',
                     f"prototypes_c{args.n_proto}_{args.data_source[0].split('/')[-2]}_{args.mode}_num_{args.n_proto_patches:.1e}.pkl")

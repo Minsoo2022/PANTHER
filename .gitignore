@@ -11,3 +11,5 @@ src/results/
 **/embeddings/
 **/prototypes/
 **/test.ipynb
+*.xml
+*.iml
