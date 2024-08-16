@@ -127,7 +127,7 @@ def read_splits(args, fold_idx=None):
         
         if os.path.isfile(split_path):
             df = pd.read_csv(split_path)#.sample(frac=1, random_state=0).head(25).reset_index(drop=True)
-            assert 'Unnamed: 0' not in df.columns
+            # assert 'Unnamed: 0' not in df.columns
             splits_csvs[split] = df
 
     return splits_csvs

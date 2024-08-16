@@ -7,6 +7,10 @@ https://github.com/facebookresearch/faiss/wiki/FAQ#questions-about-training
 
 from __future__ import print_function
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import argparse
 import torch
 from torch.utils.data import DataLoader

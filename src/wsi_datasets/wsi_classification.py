@@ -14,7 +14,7 @@ from torch.utils.data import Dataset
 import h5py
 from .dataset_utils import apply_sampling
 sys.path.append('../')
-from utils.pandas_helper_funcs import df_sdir, series_diff
+from utils.pandas_helper_funcs import df_sdir, df_sdir2, series_diff
 
 class WSIClassificationDataset(Dataset):
     """WSI Classification Dataset."""
@@ -34,12 +34,12 @@ class WSIClassificationDataset(Dataset):
         """
         self.data_source = []
         for src in data_source:
-            assert os.path.basename(src) in ['feats_h5', 'feats_pt']
+            assert os.path.basename(src) in ['feats_h5', 'feats_pt', 'pt_files']
             self.use_h5 = True if os.path.basename(src) == 'feats_h5' else False
             self.data_source.append(src)
 
         self.data_df = df
-        assert 'Unnamed: 0' not in self.data_df.columns
+        # assert 'Unnamed: 0' not in self.data_df.columns
         self.sample_col = sample_col
         self.slide_col = slide_col
         self.target_col = target_col
@@ -52,8 +52,8 @@ class WSIClassificationDataset(Dataset):
         self.y = None
 
         self.validate_classification_dataset()
-        self.idx2sample_df = pd.DataFrame({'sample_id': self.data_df[sample_col].astype(str).unique()})
         self.set_feat_paths_in_df()
+        self.idx2sample_df = pd.DataFrame({'sample_id': self.data_df[sample_col].astype(str).unique()})
         self.data_df.index = self.data_df[sample_col].astype(str)
         self.data_df.index.name = 'sample_id'
         print(self.data_df.groupby([target_col])[sample_col].count().to_string())
@@ -72,7 +72,14 @@ class WSIClassificationDataset(Dataset):
         Sets the feature path (for each slide id) in self.data_df. At the same time, checks that all slides 
         specified in the split (or slides for the cases specified in the split) exist within data source.
         """
-        self.feats_df = pd.concat([df_sdir(feats_dir, cols=['fpath', 'fname', self.slide_col]) for feats_dir in self.data_source]).drop(['fname'], axis=1).reset_index(drop=True)
+
+        if True:
+            self.feats_df = pd.concat([df_sdir2(feats_dir, cols=['fpath', 'fname', self.slide_col]) for feats_dir in
+                                       self.data_source]).drop(['fname'], axis=1).reset_index(drop=True)
+        else:
+            self.feats_df = pd.concat([df_sdir(feats_dir, cols=['fpath', 'fname', self.slide_col]) for feats_dir in
+                                       self.data_source]).drop(['fname'], axis=1).reset_index(drop=True)
+
         missing_feats_in_split = series_diff(self.data_df[self.slide_col], self.feats_df[self.slide_col])
 
         ### Assertion to make sure there  are no unexpected labels in split

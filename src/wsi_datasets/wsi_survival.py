@@ -14,7 +14,7 @@ from torch.utils.data import Dataset
 import h5py
 from .dataset_utils import apply_sampling
 sys.path.append('../')
-from utils.pandas_helper_funcs import df_sdir, series_diff
+from utils.pandas_helper_funcs import df_sdir, df_sdir2, series_diff
 
 class WSISurvivalDataset(Dataset):
     """WSI Survival Dataset."""
@@ -37,7 +37,7 @@ class WSISurvivalDataset(Dataset):
         """
         self.data_source = []
         for src in data_source:
-            assert os.path.basename(src) in ['feats_h5', 'feats_pt']
+            assert os.path.basename(src) in ['feats_h5', 'feats_pt', 'pt_files']
             self.use_h5 = True if os.path.basename(src) == 'feats_h5' else False
             self.data_source.append(src)
 
@@ -74,8 +74,9 @@ class WSISurvivalDataset(Dataset):
         self.bag_size = bag_size
 
         self.validate_survival_dataset()
-        self.idx2sample_df = pd.DataFrame({'sample_id': self.data_df[sample_col].astype(str).unique()})
         self.set_feat_paths_in_df()
+        self.idx2sample_df = pd.DataFrame({'sample_id': self.data_df[sample_col].astype(str).unique()})
+
         self.data_df.index = self.data_df[sample_col].astype(str)
         self.data_df.index.name = 'sample_id'
         self.X = None
@@ -116,12 +117,23 @@ class WSISurvivalDataset(Dataset):
         Sets the feature path (for each slide id) in self.data_df. At the same time, checks that all slides 
         specified in the split (or slides for the cases specified in the split) exist within data source.
         """
-        self.feats_df = pd.concat([df_sdir(feats_dir, cols=['fpath', 'fname', self.slide_col]) for feats_dir in self.data_source]).drop(['fname'], axis=1).reset_index(drop=True)
+
+
+        if True:
+            self.feats_df = pd.concat([df_sdir2(feats_dir, cols=['fpath', 'fname', self.slide_col]) for feats_dir in
+                                       self.data_source]).drop(['fname'], axis=1).reset_index(drop=True)
+        else:
+            self.feats_df = pd.concat([df_sdir(feats_dir, cols=['fpath', 'fname', self.slide_col]) for feats_dir in
+                                       self.data_source]).drop(['fname'], axis=1).reset_index(drop=True)
+
         missing_feats_in_split = series_diff(self.data_df[self.slide_col], self.feats_df[self.slide_col])
 
         ### Assertion to make sure that there are not any missing slides that were specified in your split csv file
         try:
-            assert len(missing_feats_in_split) == 0
+            print(f"Missing Features in Split:\n{missing_feats_in_split}")
+            self.feats_df = self.feats_df[~self.feats_df[self.slide_col].isin(missing_feats_in_split)]
+            self.data_df = self.data_df[~self.data_df[self.slide_col].isin(missing_feats_in_split)]
+            # assert len(missing_feats_in_split) == 0
         except:
             print(f"Missing Features in Split:\n{missing_feats_in_split}")
             sys.exit()

@@ -5,8 +5,8 @@ task=$2
 target_col=$3
 split_dir=$4
 split_names=$5
-dataroots=("$@")
-
+#dataroots=("$@")
+dataroots=$6
 feat='extracted-vit_large_patch16_224.dinov2.uni_mass100k'
 input_dim=1024
 mag='20x'
@@ -18,7 +18,9 @@ out_size=16
 out_type='allcat'
 model_tuple='PANTHER,default'
 lin_emb_model='LinearEmb'
-max_epoch=50
+#max_epoch=50
+max_epoch=2
+
 lr=0.0001
 wd=0.00001
 lr_scheduler='cosine'
@@ -52,20 +54,23 @@ else
 fi
 
 # Identify feature paths
-all_feat_dirs=""
-for dataroot_path in "${dataroots[@]}"; do
-  feat_dir=${dataroot_path}/extracted_mag${mag}_patch${patch_size}_fp/${feat}/feats_pt
-  if ! test -d $feat_dir
-  then
-    continue
-  fi
+#all_feat_dirs=""
+#for dataroot_path in "${dataroots[@]}"; do
+#  feat_dir=${dataroot_path}/extracted_mag${mag}_patch${patch_size}_fp/${feat}/feats_pt
+#  if ! test -d $feat_dir
+#  then
+#    continue
+#  fi
+#
+#  if [[ -z ${all_feat_dirs} ]]; then
+#    all_feat_dirs=${feat_dir}
+#  else
+#    all_feat_dirs=${all_feat_dirs},${feat_dir}
+#  fi
+#done
 
-  if [[ -z ${all_feat_dirs} ]]; then
-    all_feat_dirs=${feat_dir}
-  else
-    all_feat_dirs=${all_feat_dirs},${feat_dir}
-  fi
-done
+all_feat_dirs=$dataroots
+proto_path='splits/survival/TCGA_LUAD_overall_survival_k=0/prototypes/prototypes_c16_TCGA-ALL-x256-x20-features-from_pan_cancer-from_dino-from_sagemaker-vitb16_dino-epoch=6-bf16_faiss_num_1.0e+06.pkl'
 
 # Actual command
 cmd="CUDA_VISIBLE_DEVICES=$gpuid python -m training.main_survival \\
@@ -104,10 +109,12 @@ cmd="CUDA_VISIBLE_DEVICES=$gpuid python -m training.main_survival \\
 --fix_proto \\
 "
 
+echo $cmd
+
 # Specifiy prototype path if load_proto is True
 if [[ $load_proto -eq 1 ]]; then
   cmd="$cmd --load_proto \\
-  --proto_path "splits/${split_dir}/prototypes/prototypes_c${out_size}_extracted-${feat_name}_faiss_num_${proto_num_samples}.pkl" \\
+  --proto_path $proto_path \\
   "
 fi
 

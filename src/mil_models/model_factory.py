@@ -97,7 +97,7 @@ def create_downstream_model(args, mode='classification', config_dir='./configs')
     else:
         raise NotImplementedError(f"Not implemented for {mode}...")
     
-    if model_type == 'ABMIL':
+    if 'ABMIL' in model_type:
         config = ABMILConfig.from_pretrained(config_path, update_dict=update_dict)
         model = ABMIL(config=config, mode=mode)
     # Prototype-based models will choose from the following

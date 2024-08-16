@@ -71,6 +71,24 @@ def df_sdir(dataroot: str, cols=['fpath', 'fname', 'slide_id']):
     """
     return pd.DataFrame([(e.path, e.name, os.path.splitext(e.name)[0]) for e in sdir_(dataroot)], columns=cols)
 
+def df_sdir2(dataroot: str, cols=['fpath', 'fname', 'slide_id']):
+    """
+    Returns pd.DataFrame of the file paths and fnames of contents in dataroot.
+
+    Args:
+        dataroot (str): path to files.
+
+    Returns:
+        (pandas.Dataframe): pd.DataFrame of the file paths and fnames of contents in dataroot (make default cols: ['fpath', 'fname_ext', 'fname_noext']?)
+    """
+    df_list = []
+    for folder in os.listdir(dataroot):
+        file_name = os.listdir(os.path.join(dataroot, folder))[0]
+        file_path = os.path.join(dataroot, folder, file_name)
+        splitext = os.path.splitext(file_name)[0]
+        df_list.append((file_path, file_name, splitext))
+    return pd.DataFrame(df_list, columns=cols)
+
 
 # TODO: Fix doc + also make function for ldir_diff
 def series_diff(s1, s2, dtype='O'):

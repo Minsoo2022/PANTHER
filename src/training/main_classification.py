@@ -4,6 +4,10 @@ Main entry point for classification downstream tasks
 
 from __future__ import print_function
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import argparse
 import pdb
 import os
@@ -16,7 +20,10 @@ from utils.utils import (seed_torch, array2list, merge_dict, read_splits,
                          parse_model_name, get_current_time,
                          extract_patching_info)
 
-from .trainer import train
+try:
+    from .trainer import train
+except:
+    from training.trainer import train
 from wsi_datasets import WSIClassificationDataset
 from data_factory import tasks, label_dicts
 
@@ -230,14 +237,15 @@ args = parser.parse_args()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
-
+    
+    for seed in [1, 42, 47, 100]:
     args.label_map = label_dicts[args.task]
     print('label map: ', args.label_map)
     args.n_classes = len(set(list(args.label_map.values())))
     print('task: ', args.task)
     args.split_dir = j_('splits', args.split_dir)
     print('split_dir: ', args.split_dir)
-    
+
     split_num = args.split_dir.split('/')[2].split('_k=')
     args.split_name_clean = args.split_dir.split('/')[2].split('_k=')[0]
     if len(split_num) > 1:
@@ -252,18 +260,20 @@ if __name__ == "__main__":
     ### Allows you to pass in multiple data sources (separated by comma). If single data source, no change.
     args.data_source = [src for src in args.data_source.split(',')]
     check_params_same = []
-    for src in args.data_source: 
+    for src in args.data_source:
         ### assert data source exists + extract feature name ###
         print('data source: ', src)
         assert os.path.isdir(src), f"data source must be a directory: {src} invalid"
 
-        ### parse patching info ### 
+        ### parse patching info ###
         feat_name = os.path.basename(src)
-        mag, patch_size = extract_patching_info(os.path.dirname(src))
+        # mag, patch_size = extract_patching_info(os.path.dirname(src))
+        mag = 20
+        patch_size = 256
         if (mag < 0 or patch_size < 0):
             raise ValueError(f"invalid patching info parsed for {src}")
         check_params_same.append([feat_name, mag, patch_size])
-    
+
     try:
         check_params_same = pd.DataFrame(check_params_same, columns=['feats_name', 'mag', 'patch_size'])
         print(check_params_same.to_string())
@@ -272,31 +282,40 @@ if __name__ == "__main__":
     except:
         print("Data sources do not share the same feature extraction parameters. Exiting...")
         sys.exit()
-        
+
     ### Updated parsed mdoel parameters in args.Namespace ###
     #### parse patching info ####
-    mag, patch_size = extract_patching_info(os.path.dirname(args.data_source[0]))
-    
+    # mag, patch_size = extract_patching_info(os.path.dirname(args.data_source[0]))
+    mag = 20
+    patch_size = 256
+
     #### parse model name ####
-    parsed = parse_model_name(feat_name) 
+    parsed = parse_model_name(feat_name)
     parsed.update({'patch_mag': mag, 'patch_size': patch_size, 'feat_names': sorted(list(set(check_params_same['feats_name'].tolist())))})
     for key, val in parsed.items():
         setattr(args, key, val)
-     
+
     ### setup results dir ###
     if args.exp_code is None:
         if args.model_config == 'PANTHER_default':
-            exp_code = f"{args.split_name_clean}::{args.model_config}+{args.emb_model_type}::{args.loss_fn}::{feat_name}"
+            exp_code = f"{args.split_name_clean}::{args.model_config}+{args.emb_model_type}::{feat_name}"
         else:
             exp_code = f"{args.split_name_clean}::{args.model_config}::{feat_name}"
     else:
         pass
-    
-    args.results_dir = j_(args.results_dir, 
-                          args.task, 
-                          f'k={args.split_k}', 
-                          str(exp_code), 
-                          str(exp_code)+f"::{get_current_time()}")
+
+    # args.results_dir = j_(args.results_dir,
+    #                       args.task,
+    #                       f'k={args.split_k}',
+    #                       str(exp_code),
+    #                       str(exp_code)+f"::{get_current_time()}")
+
+
+    args.results_dir = j_(args.results_dir,
+                          args.task,
+                          str(exp_code),
+                          f'_s{args.seed}',
+                          f'{args.split_k}')
 
     os.makedirs(args.results_dir, exist_ok=True)
 

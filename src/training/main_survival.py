@@ -4,18 +4,24 @@ Main entry point for survival downstream tasks
 
 from __future__ import print_function
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
 import argparse
 import pdb
-import os
 from os.path import join as j_
-import sys
 
 # internal imports
 from utils.file_utils import save_pkl
 from utils.utils import (seed_torch, array2list, merge_dict, read_splits, 
                          parse_model_name, get_current_time, extract_patching_info)
 
-from .trainer import train
+try:
+    from .trainer import train
+except:
+    from training.trainer import train
 from wsi_datasets import WSISurvivalDataset
 # pytorch imports
 import torch
@@ -239,7 +245,9 @@ if __name__ == "__main__":
 
         ### parse patching info ###
         feat_name = os.path.basename(src)
-        mag, patch_size = extract_patching_info(os.path.dirname(src))
+        # mag, patch_size = extract_patching_info(os.path.dirname(src))
+        mag = 20
+        patch_size = 256
         if (mag < 0 or patch_size < 0):
             raise ValueError(f"invalid patching info parsed for {src}")
         check_params_same.append([feat_name, mag, patch_size])
