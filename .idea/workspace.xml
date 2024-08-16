@@ -169,7 +169,7 @@
       <updated>1722408458284</updated>
       <workItem from="1722408464078" duration="21557000" />
       <workItem from="1723188212457" duration="4192000" />
-      <workItem from="1723195289932" duration="34672000" />
+      <workItem from="1723195289932" duration="34707000" />
     </task>
     <servers />
   </component>
@@ -241,7 +241,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/training/main_classification.py</url>
-          <line>306</line>
+          <line>305</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>

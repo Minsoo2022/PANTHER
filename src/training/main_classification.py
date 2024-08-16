@@ -238,7 +238,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
     
-    for seed in [1, 42, 47, 100]:
     args.label_map = label_dicts[args.task]
     print('label map: ', args.label_map)
     args.n_classes = len(set(list(args.label_map.values())))
