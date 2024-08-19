@@ -33,6 +33,7 @@ from torch.utils.data import DataLoader, sampler
 import pandas as pd
 import numpy as np
 import json
+import copy
 
 PROTO_MODELS = ['PANTHER', 'OT', 'H2T', 'ProtoCount']
 
@@ -237,95 +238,102 @@ args = parser.parse_args()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
-    
-    args.label_map = label_dicts[args.task]
-    print('label map: ', args.label_map)
-    args.n_classes = len(set(list(args.label_map.values())))
-    print('task: ', args.task)
-    args.split_dir = j_('splits', args.split_dir)
-    print('split_dir: ', args.split_dir)
 
-    split_num = args.split_dir.split('/')[2].split('_k=')
-    args.split_name_clean = args.split_dir.split('/')[2].split('_k=')[0]
-    if len(split_num) > 1:
-        args.split_k = int(split_num[1])
-    else:
-        args.split_k = 0
+    args_ori = copy.copy(args)
 
-    print(args.proto_path)
-    if os.path.isfile(args.proto_path):
-        args.proto_fname = '/'.join(args.proto_path.split('/')[-2:])
+    for seed in [1, 42, 47, 100]:
+        for split_num in [0,1,2,3,4]:
+            args = copy.copy(args_ori)
+            args.split_dir += f'_k={split_num}'
+            args.seed = seed
+            args.label_map = label_dicts[args.task]
+            print('label map: ', args.label_map)
+            args.n_classes = len(set(list(args.label_map.values())))
+            print('task: ', args.task)
+            args.split_dir = j_('splits', args.split_dir)
+            print('split_dir: ', args.split_dir)
 
-    ### Allows you to pass in multiple data sources (separated by comma). If single data source, no change.
-    args.data_source = [src for src in args.data_source.split(',')]
-    check_params_same = []
-    for src in args.data_source:
-        ### assert data source exists + extract feature name ###
-        print('data source: ', src)
-        assert os.path.isdir(src), f"data source must be a directory: {src} invalid"
+            split_num = args.split_dir.split('/')[2].split('_k=')
+            args.split_name_clean = args.split_dir.split('/')[2].split('_k=')[0]
+            if len(split_num) > 1:
+                args.split_k = int(split_num[1])
+            else:
+                args.split_k = 0
 
-        ### parse patching info ###
-        feat_name = os.path.basename(src)
-        # mag, patch_size = extract_patching_info(os.path.dirname(src))
-        mag = 20
-        patch_size = 256
-        if (mag < 0 or patch_size < 0):
-            raise ValueError(f"invalid patching info parsed for {src}")
-        check_params_same.append([feat_name, mag, patch_size])
+            print(args.proto_path)
+            if os.path.isfile(args.proto_path):
+                args.proto_fname = '/'.join(args.proto_path.split('/')[-2:])
 
-    try:
-        check_params_same = pd.DataFrame(check_params_same, columns=['feats_name', 'mag', 'patch_size'])
-        print(check_params_same.to_string())
-        assert check_params_same.drop(['feats_name'],axis=1).drop_duplicates().shape[0] == 1
-        print("All data sources have the same feature extraction parameters.")
-    except:
-        print("Data sources do not share the same feature extraction parameters. Exiting...")
-        sys.exit()
+            ### Allows you to pass in multiple data sources (separated by comma). If single data source, no change.
+            args.data_source = [src for src in args.data_source.split(',')]
+            check_params_same = []
+            for src in args.data_source:
+                ### assert data source exists + extract feature name ###
+                print('data source: ', src)
+                assert os.path.isdir(src), f"data source must be a directory: {src} invalid"
 
-    ### Updated parsed mdoel parameters in args.Namespace ###
-    #### parse patching info ####
-    # mag, patch_size = extract_patching_info(os.path.dirname(args.data_source[0]))
-    mag = 20
-    patch_size = 256
+                ### parse patching info ###
+                feat_name = os.path.basename(src)
+                # mag, patch_size = extract_patching_info(os.path.dirname(src))
+                mag = 20
+                patch_size = 256
+                if (mag < 0 or patch_size < 0):
+                    raise ValueError(f"invalid patching info parsed for {src}")
+                check_params_same.append([feat_name, mag, patch_size])
 
-    #### parse model name ####
-    parsed = parse_model_name(feat_name)
-    parsed.update({'patch_mag': mag, 'patch_size': patch_size, 'feat_names': sorted(list(set(check_params_same['feats_name'].tolist())))})
-    for key, val in parsed.items():
-        setattr(args, key, val)
+            try:
+                check_params_same = pd.DataFrame(check_params_same, columns=['feats_name', 'mag', 'patch_size'])
+                print(check_params_same.to_string())
+                assert check_params_same.drop(['feats_name'],axis=1).drop_duplicates().shape[0] == 1
+                print("All data sources have the same feature extraction parameters.")
+            except:
+                print("Data sources do not share the same feature extraction parameters. Exiting...")
+                sys.exit()
 
-    ### setup results dir ###
-    if args.exp_code is None:
-        if args.model_config == 'PANTHER_default':
-            exp_code = f"{args.split_name_clean}::{args.model_config}+{args.emb_model_type}::{feat_name}"
-        else:
-            exp_code = f"{args.split_name_clean}::{args.model_config}::{feat_name}"
-    else:
-        pass
+            ### Updated parsed mdoel parameters in args.Namespace ###
+            #### parse patching info ####
+            # mag, patch_size = extract_patching_info(os.path.dirname(args.data_source[0]))
+            mag = 20
+            patch_size = 256
 
-    # args.results_dir = j_(args.results_dir,
-    #                       args.task,
-    #                       f'k={args.split_k}',
-    #                       str(exp_code),
-    #                       str(exp_code)+f"::{get_current_time()}")
+            #### parse model name ####
+            parsed = parse_model_name(feat_name)
+            parsed.update({'patch_mag': mag, 'patch_size': patch_size, 'feat_names': sorted(list(set(check_params_same['feats_name'].tolist())))})
+            for key, val in parsed.items():
+                setattr(args, key, val)
+
+            ### setup results dir ###
+            if args.exp_code is None:
+                if args.model_config == 'PANTHER_default':
+                    exp_code = f"{args.split_name_clean}::{args.model_config}+{args.emb_model_type}::lr{args.lr}::{feat_name}"
+                else:
+                    exp_code = f"{args.split_name_clean}::{args.model_config}::{feat_name}"
+            else:
+                pass
+
+            # args.results_dir = j_(args.results_dir,
+            #                       args.task,
+            #                       f'k={args.split_k}',
+            #                       str(exp_code),
+            #                       str(exp_code)+f"::{get_current_time()}")
 
 
-    args.results_dir = j_(args.results_dir,
-                          args.task,
-                          str(exp_code),
-                          f'_s{args.seed}',
-                          f'{args.split_k}')
+            args.results_dir = j_(args.results_dir,
+                                  args.task,
+                                  str(exp_code),
+                                  f'_s{args.seed}',
+                                  f'{args.split_k}')
 
-    os.makedirs(args.results_dir, exist_ok=True)
+            os.makedirs(args.results_dir, exist_ok=True)
 
-    print("\n################### Settings ###################")
-    for key, val in vars(args).items():
-        print("{}:  {}".format(key, val))
+            print("\n################### Settings ###################")
+            for key, val in vars(args).items():
+                print("{}:  {}".format(key, val))
 
-    with open(j_(args.results_dir, 'config.json'), 'w') as f:
-        f.write(json.dumps(vars(args), sort_keys=True, indent=4))
+            with open(j_(args.results_dir, 'config.json'), 'w') as f:
+                f.write(json.dumps(vars(args), sort_keys=True, indent=4))
 
-    #### train ####
-    results = main(args)
+            #### train ####
+            results = main(args)
 
-    print("FINISHED!\n\n\n")
+            print("FINISHED!\n\n\n")

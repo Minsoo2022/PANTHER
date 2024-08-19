@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71054def-6848-4c7b-86f0-27f35b6a697b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_factory/cls_default.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_factory/cls_default.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mil_models/model_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/mil_models/model_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scripts/survival/luad_surv.sh" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/survival/luad_surv.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scripts/survival/panther.sh" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/survival/panther.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/training/main_classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/main_classification.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/main_embedding.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/main_embedding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/main_prototype.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/main_prototype.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/main_survival.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/main_survival.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/pandas_helper_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/pandas_helper_funcs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/wsi_datasets/wsi_classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/wsi_datasets/wsi_classification.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/wsi_datasets/wsi_prototype.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/wsi_datasets/wsi_prototype.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/wsi_datasets/wsi_survival.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/wsi_datasets/wsi_survival.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +30,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
@@ -55,7 +44,29 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_classification">
+  <component name="RunManager" selected="Python.all_summary_results">
+    <configuration name="all_summary_results" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PANTHER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/all_summary_results.py" />
+      <option name="PARAMETERS" value="--exp_dir ./results/LUAD_TMB::PANTHER_default::vit_large_patch16_224.dinov2.uni_mass100k/linear" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main_classification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PANTHER" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -70,7 +81,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/training/main_classification.py" />
-      <option name="PARAMETERS" value="--data_source /data/e130bf/wsi_feat/TCGA-ALL-x256-x20-features-from_pan_cancer-from_dino-from_sagemaker-vitb16_dino-epoch=6-bf16/pt_files --results_dir results/LUAD_TMB::PANTHER_default::vit_large_patch16_224.dinov2.uni_mass100k --split_dir classification/LUAD_TMB_k=0 --split_names train,val,test --task LUAD_TMB --target_col label --model_type PANTHER --model_config PANTHER_default --n_fc_layers 0 --in_dim 768 --opt adamW --lr 0.0001 --lr_scheduler cosine --accum_steps 1 --wd 0.00001 --warmup_epochs 1 --max_epochs 2 --train_bag_size -1 --batch_size 64 --in_dropout 0 --seed 1 --num_workers 8 --em_iter 1 --tau 1.0 --n_proto 16 --out_type allcat --early_stopping --emb_model_type ABMIL_default --ot_eps 1 --fix_proto" />
+      <option name="PARAMETERS" value="--data_source /data/e130bf/wsi_feat/TCGA-ALL-x256-x20-features-from_pan_cancer-from_dino-from_sagemaker-vitb16_dino-epoch=6-bf16/pt_files --results_dir results/LUAD_TMB::PANTHER_default::vit_large_patch16_224.dinov2.uni_mass100k --split_dir classification/LUAD_TMB --split_names train,val,test --task LUAD_TMB --target_col label --model_type PANTHER --model_config PANTHER_default --n_fc_layers 0 --in_dim 768 --opt adamW --lr 0.0001 --lr_scheduler cosine --accum_steps 1 --wd 0.00001 --warmup_epochs 1 --max_epochs 2 --train_bag_size -1 --batch_size 64 --in_dropout 0 --seed 1 --num_workers 8 --em_iter 1 --tau 1.0 --n_proto 16 --out_type allcat --early_stopping --emb_model_type LinearEmb --ot_eps 1 --fix_proto" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -149,9 +160,11 @@
       <item itemvalue="Python.main_prototype" />
       <item itemvalue="Python.main_survival" />
       <item itemvalue="Python.main_classification" />
+      <item itemvalue="Python.all_summary_results" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.all_summary_results" />
         <item itemvalue="Python.main_classification" />
         <item itemvalue="Python.main_survival" />
         <item itemvalue="Python.main_embedding" />
@@ -169,7 +182,10 @@
       <updated>1722408458284</updated>
       <workItem from="1722408464078" duration="21557000" />
       <workItem from="1723188212457" duration="4192000" />
-      <workItem from="1723195289932" duration="34707000" />
+      <workItem from="1723195289932" duration="34821000" />
+      <workItem from="1723794841129" duration="452000" />
+      <workItem from="1723795377562" duration="4022000" />
+      <workItem from="1724025384550" duration="3876000" />
     </task>
     <servers />
   </component>
@@ -236,21 +252,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/training/main_classification.py</url>
-          <line>133</line>
+          <line>134</line>
           <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/training/main_classification.py</url>
-          <line>305</line>
+          <line>313</line>
           <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/training/main_classification.py</url>
+          <line>250</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/all_summary_results.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PANTHER$all_summary_results.coverage" NAME="all_summary_results Coverage Results" MODIFIED="1724028781628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/PANTHER$make_csv.coverage" NAME="make_csv Coverage Results" MODIFIED="1722418123757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/etc" />
     <SUITE FILE_PATH="coverage/PANTHER$main_survival.coverage" NAME="main_survival Coverage Results" MODIFIED="1723619610227" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
-    <SUITE FILE_PATH="coverage/PANTHER$main_classification.coverage" NAME="main_classification Coverage Results" MODIFIED="1723791739391" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/PANTHER$main_classification.coverage" NAME="main_classification Coverage Results" MODIFIED="1724025831159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/PANTHER$main_prototype.coverage" NAME="main_prototype Coverage Results" MODIFIED="1723197613202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/PANTHER$main_embedding.coverage" NAME="main_embedding Coverage Results" MODIFIED="1723439733953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
   </component>
