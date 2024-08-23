@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="71054def-6848-4c7b-86f0-27f35b6a697b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_factory/cls_default.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_factory/cls_default.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/training/main_classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/main_classification.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/training/main_survival.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/training/main_survival.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,15 +35,18 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.all_summary_results">
+  <component name="RunManager" selected="Python.all_summary_results_survival">
     <configuration name="all_summary_results" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PANTHER" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -60,6 +62,28 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/all_summary_results.py" />
       <option name="PARAMETERS" value="--exp_dir ./results/LUAD_TMB::PANTHER_default::vit_large_patch16_224.dinov2.uni_mass100k/linear" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="all_summary_results_survival" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PANTHER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/all_summary_results_survival.py" />
+      <option name="PARAMETERS" value="--exp_dir /data/890836/shared/ms.lee/ws/PANTHER/src/results/LUAD_survival::PANTHER_default::vit_large_patch16_224.dinov2.uni_mass100k/LUAD_survival" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -111,28 +135,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main_prototype" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PANTHER" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/training/main_prototype.py" />
-      <option name="PARAMETERS" value="--mode faiss --data_source /data/e130bf/wsi_feat/TCGA-ALL-x256-x20-features-from_pan_cancer-from_dino-from_sagemaker-vitb16_dino-epoch=6-bf16/pt_files --split_dir survival/TCGA_LUAD_overall_survival_k=0 --split_names train --in_dim 768 --n_proto_patche 2000000 --n_proto 256 --n_init 200 --seed 2 --num_workers 20" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="main_survival" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PANTHER" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -157,18 +159,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.main_embedding" />
-      <item itemvalue="Python.main_prototype" />
       <item itemvalue="Python.main_survival" />
       <item itemvalue="Python.main_classification" />
       <item itemvalue="Python.all_summary_results" />
+      <item itemvalue="Python.all_summary_results_survival" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.all_summary_results_survival" />
+        <item itemvalue="Python.main_survival" />
         <item itemvalue="Python.all_summary_results" />
         <item itemvalue="Python.main_classification" />
-        <item itemvalue="Python.main_survival" />
         <item itemvalue="Python.main_embedding" />
-        <item itemvalue="Python.main_prototype" />
       </list>
     </recent_temporary>
   </component>
@@ -185,7 +187,7 @@
       <workItem from="1723195289932" duration="34821000" />
       <workItem from="1723794841129" duration="452000" />
       <workItem from="1723795377562" duration="4022000" />
-      <workItem from="1724025384550" duration="3876000" />
+      <workItem from="1724025384550" duration="19614000" />
     </task>
     <servers />
   </component>
@@ -270,14 +272,30 @@
           <line>81</line>
           <option name="timeStamp" value="58" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/wsi_datasets/wsi_survival.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/all_summary_results_survival.py</url>
+          <line>58</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/all_summary_results_survival.py</url>
+          <line>17</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PANTHER$all_summary_results.coverage" NAME="all_summary_results Coverage Results" MODIFIED="1724028781628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/PANTHER$make_csv.coverage" NAME="make_csv Coverage Results" MODIFIED="1722418123757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/etc" />
-    <SUITE FILE_PATH="coverage/PANTHER$main_survival.coverage" NAME="main_survival Coverage Results" MODIFIED="1723619610227" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/PANTHER$main_classification.coverage" NAME="main_classification Coverage Results" MODIFIED="1724025831159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/PANTHER$main_survival.coverage" NAME="main_survival Coverage Results" MODIFIED="1724311623306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
+    <SUITE FILE_PATH="coverage/PANTHER$all_summary_results_survival.coverage" NAME="all_summary_results_survival Coverage Results" MODIFIED="1724389306992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/PANTHER$main_prototype.coverage" NAME="main_prototype Coverage Results" MODIFIED="1723197613202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/PANTHER$main_embedding.coverage" NAME="main_embedding Coverage Results" MODIFIED="1723439733953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
   </component>
